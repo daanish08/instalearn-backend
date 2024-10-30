@@ -42,6 +42,34 @@ CREATE TABLE `attachments` (
   CONSTRAINT `attachments_ibfk_1` FOREIGN KEY (`CourseID`) REFERENCES `courses` (`CourseID`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
+USER
+---
+CREATE TABLE `user` (
+  `UserID` int NOT NULL AUTO_INCREMENT,
+  `Username` varchar(255) NOT NULL,
+  `Password` varchar(255) NOT NULL,
+  `Email` varchar(255) NOT NULL,
+  PRIMARY KEY (`UserID`),
+  UNIQUE KEY `Username` (`Username`),
+  UNIQUE KEY `Email` (`Email`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+ENROLLMENTS TABLE
+---
+CREATE TABLE `enrollment` (
+  `EnrollmentID` int NOT NULL AUTO_INCREMENT,
+  `UserID` int DEFAULT NULL,
+  `CourseID` int DEFAULT NULL,
+  `EnrollmentDate` datetime DEFAULT CURRENT_TIMESTAMP,
+  `Status` varchar(255) NOT NULL DEFAULT 'PENDING',
+  PRIMARY KEY (`EnrollmentID`),
+  KEY `UserID` (`UserID`),
+  KEY `CourseID` (`CourseID`),
+  CONSTRAINT `enrollment_ibfk_1` FOREIGN KEY (`UserID`) REFERENCES `user` (`UserID`),
+  CONSTRAINT `enrollment_ibfk_2` FOREIGN KEY (`CourseID`) REFERENCES `courses` (`CourseID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+
 
 
 TEMPORARY DELETION OF DATA IN FOREIGN KEY TABLES
