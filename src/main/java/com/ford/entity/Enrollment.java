@@ -29,4 +29,14 @@ public class Enrollment {
 
     @Column(name = "EnrollmentDate")
     private Date enrollmentDate;
+
+    @Enumerated(EnumType.STRING) // Important for better database compatibility
+    @Column(name = "Status")
+    private EnrollmentStatus status = EnrollmentStatus.PENDING; // Default to pending
+}
+
+enum EnrollmentStatus {
+    PENDING,
+    APPROVED,
+    REJECTED
 }

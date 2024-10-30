@@ -11,4 +11,5 @@ import java.util.List;
 public interface ICourseService{
     ResponseEntity<List<Course>> findCoursesByAdmin(int adminId);
     ResponseEntity<List<Course>> getAllCourses();
+    ResponseEntity<Course> findCourseByCourseId(int courseId);
 }

@@ -7,5 +7,6 @@ import java.util.List;
 
 public interface ICourseRepository extends JpaRepository<Course, Integer> {
     List<Course> findByAdmin_AdminId(int adminId);
+    Course findCourseByCourseId(int courseId);
 
 }

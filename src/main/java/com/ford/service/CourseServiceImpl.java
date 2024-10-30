@@ -30,6 +30,15 @@ public class CourseServiceImpl implements ICourseService {
     }
 
     @Override
+    public ResponseEntity<Course> findCourseByCourseId(int courseId) {
+        Course course = courseRepository.findCourseByCourseId(courseId);
+        if (course==null) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(course, HttpStatus.OK);
+    }
+
+    @Override
     public ResponseEntity<List<Course>> getAllCourses() {
         List<Course> courses = courseRepository.findAll();
         return new ResponseEntity<>(courses, HttpStatus.OK);

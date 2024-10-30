@@ -42,15 +42,6 @@ public class UserController {
         return userService.updateUser(user,userId);
     }
 
-    @GetMapping("/courses")
-    public ResponseEntity<List<Course>> listCourses(){
-        return courseService.getAllCourses();
-    }
-
-//    @PostMapping("/course/{courseId}")
-//    public ResponseEntity<Course> getCourseDetails(@PathVariable int courseId){
-//
-//    }
 
 
 
