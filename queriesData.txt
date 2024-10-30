@@ -1,0 +1,63 @@
+QUEREIES
+----------------
+
+ADMIN TABLE
+----
+CREATE TABLE `admin` (
+  `AdminID` int NOT NULL AUTO_INCREMENT,
+  `Name` varchar(255) NOT NULL,
+  `Password` varchar(255) NOT NULL,
+  PRIMARY KEY (`AdminID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+
+COURSE TABLE
+---
+CREATE TABLE `courses` (
+  `CourseID` int NOT NULL AUTO_INCREMENT,
+  `CourseName` varchar(255) NOT NULL,
+  `Description` text,
+  `Instructor` varchar(255) DEFAULT NULL,
+  `Duration` int DEFAULT NULL,
+  `CreatedAt` datetime DEFAULT CURRENT_TIMESTAMP,
+  `UpdatedAt` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `AdminID` int DEFAULT NULL,
+  PRIMARY KEY (`CourseID`),
+  KEY `fk_courses_admins` (`AdminID`),
+  CONSTRAINT `fk_courses_admins` FOREIGN KEY (`AdminID`) REFERENCES `admin` (`AdminID`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+
+ATTACHMENT TABLE
+---
+CREATE TABLE `attachments` (
+  `AttachmentID` int NOT NULL AUTO_INCREMENT,
+  `CourseID` int DEFAULT NULL,
+  `FileName` varchar(255) NOT NULL,
+  `FileType` varchar(50) DEFAULT NULL,
+  `FilePath` varchar(255) NOT NULL,
+  `UploadedAt` datetime DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`AttachmentID`),
+  KEY `CourseID` (`CourseID`),
+  CONSTRAINT `attachments_ibfk_1` FOREIGN KEY (`CourseID`) REFERENCES `courses` (`CourseID`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+
+
+TEMPORARY DELETION OF DATA IN FOREIGN KEY TABLES
+--------
+-- Disable foreign key checks
+SET FOREIGN_KEY_CHECKS = 0;
+
+-- Truncate the table
+TRUNCATE TABLE courses;
+
+-- Re-enable foreign key checks
+SET FOREIGN_KEY_CHECKS = 1;
+
+
+----
+ALTER STATMENTS
+ALTER TABLE admin
+ADD CONSTRAINT unique_admin_name UNIQUE (Name);
+
