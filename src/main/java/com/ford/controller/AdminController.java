@@ -1,15 +1,11 @@
 package com.ford.controller;
-import com.ford.entity.Admin;
-import com.ford.entity.Attachments;
-import com.ford.entity.Course;
-import com.ford.entity.User;
-import com.ford.service.AdminServiceImpl;
-import com.ford.service.AttachmentServiceImpl;
-import com.ford.service.CourseServiceImpl;
-import com.ford.service.UserServiceImpl;
+import com.ford.entity.*;
+import com.ford.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
+
 import java.util.List;
 
 
@@ -26,6 +22,9 @@ public class AdminController {
 
     @Autowired
     AttachmentServiceImpl attachmentService;
+
+    @Autowired
+    EnrollmentServiceImpl enrollmentService;
 
     @Autowired
     UserServiceImpl userService;
@@ -86,5 +85,47 @@ public class AdminController {
         return userService.getAllUsers();
     }
 
+
+    //Enrollments status in admin---------------------------------
+
+//    @GetMapping("A{adminId}/approvals")
+////    @PreAuthorize("hasRole('ADMIN')")
+//    public ResponseEntity<List<Enrollment>> getAllPendingEnrollments(@PathVariable int adminId) {
+//        try {
+//            List<Enrollment> pendingEnrollments = (List<Enrollment>) enrollmentService.getPendingEnrollments(adminId);
+//            System.out.println(pendingEnrollments);
+//            return ResponseEntity.ok(pendingEnrollments);
+//        } catch (Exception e) {
+//            e.printStackTrace(); //Replace with proper logging
+//            return ResponseEntity.internalServerError().build();
+//        }
+//    }
+
+    @PutMapping("A{adminId}/approvals/{enrollmentId}/approve")
+    public ResponseEntity<String> approveEnrollment(@PathVariable int enrollmentId,@PathVariable int adminId) {
+        try {
+            enrollmentService.approveEnrollment(enrollmentId,adminId);
+            return ResponseEntity.ok("Enrollment approved successfully");
+        } catch (ResponseStatusException ex) {
+            return ResponseEntity.status(ex.getStatusCode()).body(ex.getReason());
+        } catch (Exception e) {
+            e.printStackTrace(); //Replace with proper logging
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+
+
+    @PutMapping("A{adminId}/approvals/{enrollmentId}/reject")
+    public ResponseEntity<String> rejectEnrollment(@PathVariable int enrollmentId,@PathVariable int adminId) {
+        try {
+            enrollmentService.rejectEnrollment(enrollmentId,adminId);
+            return ResponseEntity.ok("Enrollment rejected successfully");
+        } catch (ResponseStatusException ex) {
+            return ResponseEntity.status(ex.getStatusCode()).body(ex.getReason());
+        } catch (Exception e) {
+            e.printStackTrace(); //Replace with proper logging
+            return ResponseEntity.internalServerError().build();
+        }
+    }
 
 }

@@ -31,7 +31,7 @@ public class Course {
     @Column(name = "Duration")
     private Integer duration;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "AdminID", referencedColumnName = "AdminID")
     private Admin admin;
 
