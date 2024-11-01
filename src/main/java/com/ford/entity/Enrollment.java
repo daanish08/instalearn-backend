@@ -24,13 +24,12 @@ public class Enrollment {
     @JoinColumn(name = "UserID", referencedColumnName = "UserID")
     private User user;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "CourseID", referencedColumnName = "CourseID")
     private Course course;
 
     @Column(name = "enrollmentDate", nullable = false)
     private LocalDateTime enrollmentDate;
-
 
     @Enumerated(EnumType.STRING) // Important for better database compatibility
     @Column(name = "Status")

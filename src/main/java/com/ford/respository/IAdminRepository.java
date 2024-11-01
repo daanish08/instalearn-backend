@@ -9,7 +9,6 @@ import java.util.Optional;
 @Repository
 public interface IAdminRepository extends JpaRepository<Admin, Integer> {
 
-
-    Admin findByAdminId(int adminId);
+    Admin findByAdminId(long adminId);
 }
 

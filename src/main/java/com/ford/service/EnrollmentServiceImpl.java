@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
@@ -52,31 +53,57 @@ public class EnrollmentServiceImpl implements IEnrollmentService{
         }
     }
 
-    public ResponseEntity<List<Enrollment>> getPendingEnrollments(int adminId) {
+//    public ResponseEntity<List<Enrollment>> getPendingEnrollments(int adminId) {
+//        try {
+//            // Retrieve pending enrollments for the given admin
+//            List<Enrollment> pendingEnrollments = (adminId);
+//            System.out.println(pendingEnrollments);
+//            if (pendingEnrollments.isEmpty()) {
+//                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+//            }
+//
+//            // Iterate over enrollments and check for null Course
+//            for (Enrollment enrollment : pendingEnrollments) {
+//                Course course = enrollment.getCourse();
+//                if (course == null) {
+//                    // Log or handle the case where course is null
+//                    System.err.println("Enrollment with ID " + enrollment.getEnrollmentId() + " has no associated Course.");
+//                    return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+//                }
+//                if (course.getAdmin() == null) {
+//                    // Log or handle the case where admin is null
+//                    System.err.println("Course with ID " + course.getCourseId() + " has no associated Admin.");
+//                    return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+//                }
+//                // For logging or debugging purposes
+//                System.out.println(course.getAdmin().getAdminId());
+//            }
+//
+//            // Return the list of pending enrollments with an OK status
+//            return new ResponseEntity<>(pendingEnrollments, HttpStatus.OK);
+//
+//        } catch (Exception e) {
+//            // Log the exception
+//            e.printStackTrace();
+//            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+//        }
+//    }
+
+    @Transactional(readOnly = true)
+    public List<Enrollment> findPendingEnrollmentsByAdminId(long adminId) {
         try {
-            // Retrieve pending enrollments for the given admin
-            Enrollment enrollment = new Enrollment();
-            System.out.println(enrollment);
-            System.out.println(enrollment.getCourse().getAdmin().getAdminId());
-            List<Enrollment> pendingEnrollments = enrollmentRepository.findPendingEnrollmentsByAdminId(adminId);
-
-            // Check if any pending enrollments were found
-            if (pendingEnrollments.isEmpty()) {
-                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-            }
-
-            // Return the list of pending enrollments with an OK status
-            return new ResponseEntity<>(pendingEnrollments, HttpStatus.OK);
-
+            // Spring Data JPA will automatically generate the JPQL query
+            return enrollmentRepository.findAll()
+                    .stream()
+                    .filter(e ->( e.getCourse().getAdmin().getAdminId()==(adminId)) && e.getStatus().equals("PENDING"))
+                    .toList();
         } catch (Exception e) {
-            // Log the exception (consider using a logging framework)
-            e.printStackTrace();
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            // Log the exception appropriately
+            throw new RuntimeException("Error fetching pending enrollments: " + e.getMessage(), e);
         }
     }
 
-
-    public ResponseEntity<String> approveEnrollment(int enrollmentId, int adminId) {
+    public ResponseEntity<String> approveEnrollment(int enrollmentId, long adminId) {
         try {
             // Fetch the enrollment
             Optional<Enrollment> enrollmentOptional = enrollmentRepository.findById(enrollmentId);
@@ -112,7 +139,7 @@ public class EnrollmentServiceImpl implements IEnrollmentService{
         }
     }
 
-    public ResponseEntity<String> rejectEnrollment(int enrollmentId, int adminId) {
+    public ResponseEntity<String> rejectEnrollment(int enrollmentId, long adminId) {
         try {
             // Fetch the enrollment
             Optional<Enrollment> enrollmentOptional = enrollmentRepository.findById(enrollmentId);
@@ -127,19 +154,16 @@ public class EnrollmentServiceImpl implements IEnrollmentService{
             if (course == null) {
                 return new ResponseEntity<>("Course not found", HttpStatus.NOT_FOUND);
             }
-
             // Fetch the admin associated with the course
             Admin courseAdmin = course.getAdmin();
             if (courseAdmin == null || courseAdmin.getAdminId() != adminId) {
                 return new ResponseEntity<>("Admin is not authorized to approve this enrollment", HttpStatus.UNAUTHORIZED);
             }
-
             else{
-                // Approve the enrollment
+                // reject the enrollment
                 enrollment.setStatus(EnrollmentStatus.REJECTED); // Assuming there's a status field
                 enrollmentRepository.save(enrollment);
             }
-
             return new ResponseEntity<>("Enrollment rejected successfully", HttpStatus.OK);
 
         } catch (Exception e) {

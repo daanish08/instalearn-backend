@@ -12,8 +12,8 @@ public interface IAdminService {
     public ResponseEntity<String> deleteAdmin(int id);
     public ResponseEntity<List<Admin>> getAllAdmin();
 
-    public ResponseEntity<String> createCourse( int admin,Course course);
-    public ResponseEntity<String> deleteCourse(int admin,int courseId);
-    public ResponseEntity<String> updateCourse(int admin,int courseId,Course course);
+    public ResponseEntity<String> createCourse( long admin,Course course);
+    public ResponseEntity<String> deleteCourse(long admin,int courseId);
+    public ResponseEntity<String> updateCourse(long admin,int courseId,Course course);
 
 }

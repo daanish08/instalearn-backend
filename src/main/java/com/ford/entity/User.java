@@ -16,16 +16,16 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "UserID")
+    @Column(name = "userID")
     private Integer userId;
 
-    @Column(name = "Username", nullable = false, unique = true, length = 255)
-    private String username;
+    @Column(name = "username", nullable = false, unique = true, length = 255)
+    private String userName;
 
-    @Column(name = "Password", nullable = false, length = 255)
+    @Column(name = "password", nullable = false, length = 255)
     private String password;
 
-    @Column(name = "Email", nullable = false, unique = true, length = 255)
+    @Column(name = "email", nullable = false, unique = true, length = 255)
     private String email;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)

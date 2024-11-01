@@ -15,16 +15,14 @@ import java.util.Optional;
 @Service
 public class AttachmentServiceImpl implements IAttachmentService {
 
-    private final IAttachmentRepository attachmentsRepository;
-    private final ICourseRepository courseRepository;
+    @Autowired
+    private IAttachmentRepository attachmentsRepository;
 
     @Autowired
-    public AttachmentServiceImpl(IAttachmentRepository attachmentsRepository, ICourseRepository courseRepository) {
-        this.attachmentsRepository = attachmentsRepository;
-        this.courseRepository = courseRepository;
-    }
+    private  ICourseRepository courseRepository;
 
-    public ResponseEntity<String> createAttachments(int adminId, int courseId, Attachments attachments) {
+
+    public ResponseEntity<String> createAttachments(long adminId, int courseId, Attachments attachments) {
         Optional<Course> courseOptional = courseRepository.findById(courseId);
 
         if (!courseOptional.isPresent()) {
@@ -43,7 +41,7 @@ public class AttachmentServiceImpl implements IAttachmentService {
         return new ResponseEntity<>("Attachment created successfully", HttpStatus.CREATED);
     }
 
-    public ResponseEntity<String> updateAttachments(int adminId, int courseId, int attachmentId, Attachments attachments) {
+    public ResponseEntity<String> updateAttachments(long adminId, int courseId, int attachmentId, Attachments attachments) {
         // Verify the course exists
         Optional<Course> courseOptional = courseRepository.findById(courseId);
         if (!courseOptional.isPresent()) {
@@ -64,7 +62,7 @@ public class AttachmentServiceImpl implements IAttachmentService {
         }
 
         // Update fields
-        existingAttachment.setFileName(attachments.getFileName());
+//        existingAttachment.setFileName(attachments.getFileName());
         existingAttachment.setFileType(attachments.getFileType());
         existingAttachment.setFilePath(attachments.getFilePath());
 

@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Data
@@ -16,15 +17,21 @@ public class Admin {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "AdminID")
-    private Integer adminId;
+    @Column(name = "adminID")
+    private long adminId;
 
-    @Column(name = "Name", nullable = false, unique = true,length = 255)
+    @Column(name = "name", nullable = false, unique = true,length = 255)
     private String name;
 
-    @Column(name = "Password", nullable = false, length = 255)
+    @Column(name = "email", nullable = false, unique = true,length = 255)
+    private String email;
+
+    @Column(name = "phone", nullable = false, unique = true,length = 10)
+    private String phone;
+
+    @Column(name = "password", nullable = false, length = 255)
     private String password;
 
-    @OneToMany(mappedBy = "admin", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private Set<Course> courses;
+    @OneToMany(mappedBy = "admin", cascade = CascadeType.ALL, orphanRemoval = true) // Map to the admin field in Course
+    private Set<Course> courses = new HashSet<>();
 }

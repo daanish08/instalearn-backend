@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 
+@CrossOrigin("http://localhost:4200")
 @RestController
 @RequestMapping("api/v1/course")
 public class CourseController {
@@ -16,15 +17,23 @@ public class CourseController {
     @Autowired
     CourseServiceImpl courseService;
 
+    //http://localhost:8080/instalearn/api/v1/course/list
     @GetMapping("/list")
     public ResponseEntity<List<Course>> listCourses(){
         return courseService.getAllCourses();
     }
 
-    @GetMapping("/{courseId}")
+    //http://localhost:8080/instalearn/api/v1/course/C{courseId}
+    @GetMapping("/C{courseId}")
     public ResponseEntity<Course> getCourseDetails(@PathVariable int courseId){
         return courseService.findCourseByCourseId(courseId);
     }
+
+//    @GetMapping("/approved")
+//    public ResponseEntity<List<Course>> getApprovedCourses(@RequestParam int userId) {
+//        List<Course> courses = courseService.getApprovedCoursesForUser(userId);
+//        return ResponseEntity.ok(courses);
+//    }
 
 
 

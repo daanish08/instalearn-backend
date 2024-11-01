@@ -50,7 +50,7 @@ public class AdminServiceImpl implements IAdminService {
     }
 
     @Override
-    public ResponseEntity<String> createCourse(int adminId, Course course) {
+    public ResponseEntity<String> createCourse(long adminId, Course course) {
         try {
                 Admin admin = adminRepository.findByAdminId(adminId);
                 course.setAdmin(admin);
@@ -64,7 +64,7 @@ public class AdminServiceImpl implements IAdminService {
     }
 
     @Override
-    public ResponseEntity<String> deleteCourse(int adminId, int courseId) {
+    public ResponseEntity<String> deleteCourse(long adminId, int courseId) {
         // Retrieve the course by ID
         Optional<Course> existingCourse = courseRepository.findById(courseId);
 
@@ -82,7 +82,7 @@ public class AdminServiceImpl implements IAdminService {
     }
 
     @Override
-    public ResponseEntity<String> updateCourse(int admin, int courseId, Course course) {
+    public ResponseEntity<String> updateCourse(long admin, int courseId, Course course) {
         Optional<Course> existingCourse = courseRepository.findById(courseId);
         if (!existingCourse.isPresent()) {
             return new ResponseEntity<>("Course not found", HttpStatus.NOT_FOUND);
@@ -93,6 +93,8 @@ public class AdminServiceImpl implements IAdminService {
         updatedCourse.setDescription(course.getDescription());
         updatedCourse.setInstructor(course.getInstructor());
         updatedCourse.setDuration(course.getDuration());
+        updatedCourse.setCourseURL(course.getCourseURL());
+
         // Save the updated course
         courseRepository.save(updatedCourse);
         return new ResponseEntity<>("Course updated successfully", HttpStatus.OK);}

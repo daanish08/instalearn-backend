@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Data
@@ -16,28 +17,31 @@ public class Course {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "CourseID")
+    @Column(name = "courseID")
     private Integer courseId;
 
-    @Column(name = "CourseName", nullable = false, unique = true, length = 255)
+    @Column(name = "courseName", nullable = false, unique = true, length = 255)
     private String CourseName;
 
-    @Column(name = "Description")
+    @Column(name = "description")
     private String description;
 
-    @Column(name = "Instructor", length = 255)
+    @Column(name = "instructor", length = 255)
     private String instructor;
 
-    @Column(name = "Duration")
+    @Column(name = "duration")
     private Integer duration;
 
+    @Column(name = "courseUrl")
+    private String courseURL;
+
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "AdminID", referencedColumnName = "AdminID")
+    @JoinColumn(name = "adminID", referencedColumnName = "adminID")
     private Admin admin;
 
-    @OneToMany(mappedBy = "course", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "course", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<Enrollment> enrollments;
 
-    @OneToMany(mappedBy = "course", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private Set<Attachments> attachments;
+    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Attachments> attachments = new HashSet<>();
 }

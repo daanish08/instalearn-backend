@@ -16,14 +16,7 @@ public class Attachments {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "AttachmentID")
-    private Long attachmentID;
-
-    @ManyToOne
-    @JoinColumn(name = "CourseID", nullable = false)
-    private Course course;
-
-    @Column(name = "FileName",unique = true, nullable = false)
-    private String fileName;
+    private Integer attachmentID;
 
     @Column(name = "FileType", nullable = false)
     private String fileType;
@@ -33,4 +26,8 @@ public class Attachments {
 
     @Column(name = "UploadedAt", nullable = false)
     private LocalDateTime uploadedAt;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "CourseID", nullable = false)
+    private Course course;
 }

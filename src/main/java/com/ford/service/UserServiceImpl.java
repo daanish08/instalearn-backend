@@ -44,10 +44,6 @@ public class UserServiceImpl implements IUserService{
         return ResponseEntity.status(HttpStatus.CREATED).body( userRepository.findAll());
     }
 
-    @Override
-    public ResponseEntity<User> getUser(int id) {
-        return null;
-    }
 
     @Override
     public ResponseEntity<String> updateUser(User user, int id) {
@@ -59,7 +55,7 @@ public class UserServiceImpl implements IUserService{
 
         User updatedUser = existingUserOptional.get();
         // Correctly set the values using setter methods
-        updatedUser.setUsername(user.getUsername());
+        updatedUser.setUserName(user.getUserName());
         updatedUser.setEmail(user.getEmail());
         updatedUser.setPassword(user.getPassword());
 

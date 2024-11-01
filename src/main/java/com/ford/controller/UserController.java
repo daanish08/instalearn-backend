@@ -23,21 +23,23 @@ public class UserController {
    @Autowired
    UserServiceImpl userService;
 
-    //Creation of Admin Data
+    //Creation of User Data
+    //http://localhost:8080/instalearn/user/add
     @PostMapping("/add")
     public ResponseEntity<String> addUser(@RequestBody User user){
         return userService.addUser(user);
     }
 
-
     //Deletion of User Data
-    @DeleteMapping("/{userId}/delete")
+    //http://localhost:8080/instalearn/user/U{userId}/delete
+    @DeleteMapping("/U{userId}/delete")
     public ResponseEntity<String> deleteUser(@PathVariable int userId){
         return userService.deleteUser(userId);
     }
 
-    //Updation of User Data
-    @PutMapping("/{userId}/edit")
+    //Update of User Data
+    //http://localhost:8080/instalearn/user/U{userId}/edit
+    @PutMapping("/U{userId}/edit")
     public ResponseEntity<String> updateUser(@PathVariable int userId,@RequestBody User user){
         return userService.updateUser(user,userId);
     }

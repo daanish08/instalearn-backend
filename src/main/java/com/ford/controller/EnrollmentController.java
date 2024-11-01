@@ -24,6 +24,7 @@ public class EnrollmentController {
     EnrollmentServiceImpl enrollmentService;
 
 //    Creation of ENROLL Data
+    //http://localhost:8080/instalearn/api/v1/course/U2/C2/enroll
     @PostMapping("U{userId}/C{courseId}/enroll")
     public ResponseEntity<String> EnrollNewCourse(@PathVariable int userId,@PathVariable int courseId){
         return enrollmentService.addEnrollment(courseId,userId);

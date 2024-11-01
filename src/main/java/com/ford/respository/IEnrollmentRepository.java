@@ -1,17 +1,21 @@
 package com.ford.respository;
 
+//import com.ford.entity.Course;
 import com.ford.entity.Enrollment;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+@Repository
 public interface IEnrollmentRepository extends JpaRepository<Enrollment,Integer> {
     List<Enrollment> findByStatus(String status);
 
-    @Query("SELECT e FROM Enrollment e JOIN FETCH e.course c JOIN FETCH c.admin a WHERE e.status = 'PENDING' AND a.adminId = :adminId")
-    List<Enrollment> findPendingEnrollmentsByAdminId(@Param("adminId") int adminId);
+//    List<Course> findByStatusAndUserId(int userId,String Status);
+
+
+
 
 
 }
