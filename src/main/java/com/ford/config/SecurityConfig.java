@@ -31,7 +31,7 @@ public class SecurityConfig {
                     authz
                             .requestMatchers("/auth/**").permitAll()
                             .requestMatchers("/admin/**").hasRole("ADMIN")
-                            .anyRequest().authenticated()
+                            .anyRequest().permitAll()
             )
             .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
 
