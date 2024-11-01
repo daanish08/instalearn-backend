@@ -53,7 +53,7 @@ public class AuthController {
     private String getRoleForUser(String username) {
         if (adminRepository.findByName(username) != null) {
             return "ADMIN";
-        } else if (userRepository.findByUsername(username) != null) {
+        } else if (userRepository.findByUserName(username) != null) {
             return "USER";
         }
         throw new UsernameNotFoundException("User not found with username: " + username);

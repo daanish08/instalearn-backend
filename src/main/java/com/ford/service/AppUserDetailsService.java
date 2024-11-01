@@ -25,8 +25,8 @@ public class AppUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         if (adminRepository.findByName(username) != null) {
             return new User(username, "{noop}" + adminRepository.findByName(username).getPassword(), Collections.singletonList(() -> "ROLE_ADMIN"));
-        } else if (userRepository.findByUsername(username) != null) {
-            return new User(username, "{noop}" + userRepository.findByUsername(username).getPassword(), Collections.singletonList(() -> "ROLE_USER"));
+        } else if (userRepository.findByUserName(username) != null) {
+            return new User(username, "{noop}" + userRepository.findByUserName(username).getPassword(), Collections.singletonList(() -> "ROLE_USER"));
         }
         throw new UsernameNotFoundException("User not found with username: " + username);
     }

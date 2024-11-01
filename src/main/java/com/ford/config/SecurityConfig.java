@@ -30,7 +30,7 @@ public class SecurityConfig {
                     // http paths access config
                     authz
                             .requestMatchers("/auth/**").permitAll()
-                            .requestMatchers("/admin/**").hasRole("ADMIN")
+//                            .requestMatchers("/admin/**").hasRole("ADMIN")
                             .anyRequest().permitAll()
             )
             .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
