@@ -10,7 +10,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
+@CrossOrigin("http://localhost:4200")
 @RestController
 @RequestMapping("/user")
 public class UserController {
@@ -26,7 +28,7 @@ public class UserController {
     //Creation of User Data
     //http://localhost:8080/instalearn/user/add
     @PostMapping("/add")
-    public ResponseEntity<String> addUser(@RequestBody User user){
+    public ResponseEntity<Map<String,Object>> addUser(@RequestBody User user){
         return userService.addUser(user);
     }
 
