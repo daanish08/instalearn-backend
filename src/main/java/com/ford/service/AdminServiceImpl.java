@@ -63,6 +63,12 @@ public class AdminServiceImpl implements IAdminService {
         return ResponseEntity.status(HttpStatus.CREATED).body( adminRepository.findAll());
     }
 
+
+    public ResponseEntity<Admin> getAdminById(long adminId) {
+        return ResponseEntity.status(HttpStatus.CREATED).body( adminRepository.findByAdminId(adminId));
+    }
+
+
     @Transactional
     public ResponseEntity<String> createCourse(long adminId, Course course) {
         try {

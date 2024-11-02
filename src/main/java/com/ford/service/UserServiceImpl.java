@@ -9,10 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class UserServiceImpl implements IUserService{
@@ -44,6 +41,20 @@ public class UserServiceImpl implements IUserService{
     public ResponseEntity<List<User>> getAllUsers() {
         return ResponseEntity.status(HttpStatus.CREATED).body( userRepository.findAll());
     }
+
+    public ResponseEntity<User> getUserById(int userId) {
+        return ResponseEntity.status(HttpStatus.CREATED).body( userRepository.findByUserId(userId));
+    }
+
+//    public Optional<User> getUserById(Integer id) {
+//        return userRepository.findByUserId(id);
+//    }
+
+//    public ResponseEntity<List<User>> listByUserId(int id) {
+//        return ResponseEntity.status(HttpStatus.CREATED).body( userRepository.findAllByUserId(id);
+//    }
+
+
 
 
     public Long getUsersCount() {

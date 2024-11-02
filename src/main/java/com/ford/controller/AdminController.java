@@ -54,6 +54,12 @@ public class AdminController {
         return adminService.getAllAdmin();
     }
 
+    //http://localhost:8080/instalearn/admin/AdminList/1
+    @GetMapping("/AdminList/{adminId}")
+    public ResponseEntity<Admin> getAdminListById(@PathVariable long adminId){
+        return adminService.getAdminById(adminId);
+    }
+
     //COURSES
 
     //creation of courses by Admin
