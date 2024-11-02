@@ -29,6 +29,14 @@ public class CourseController {
         return courseService.findCourseByCourseId(courseId);
     }
 
+    //http://localhost:8080/instalearn/api/v1/course/count
+    @GetMapping("/count")
+    public ResponseEntity<Long> getCoursesCount(){
+        Long count = courseService.getCourseCount(); // Ensure this returns a Long
+        return ResponseEntity.ok(count);
+    }
+
+
 //    @GetMapping("/approved")
 //    public ResponseEntity<List<Course>> getApprovedCourses(@RequestParam int userId) {
 //        List<Course> courses = courseService.getApprovedCoursesForUser(userId);

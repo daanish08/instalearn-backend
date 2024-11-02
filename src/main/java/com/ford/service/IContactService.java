@@ -9,5 +9,4 @@ import java.util.List;
 public interface IContactService {
     public ResponseEntity<String> addFeedback(Contact contact);
     public ResponseEntity<List<Contact>> getFeedback();
-//    public ResponseEntity<List<Admin>> getFeedback();
 }

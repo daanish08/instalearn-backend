@@ -35,13 +35,16 @@ public class Course {
     @Column(name = "courseUrl")
     private String courseURL;
 
+    @Column(name = "githubUrl")
+    private String githubURL;
+
+    @Column(name = "driveUrl")
+    private String driveURL;
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "adminID", referencedColumnName = "adminID")
     private Admin admin;
 
     @OneToMany(mappedBy = "course", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<Enrollment> enrollments;
-
-    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Attachments> attachments = new HashSet<>();
 }

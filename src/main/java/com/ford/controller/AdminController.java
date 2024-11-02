@@ -25,8 +25,7 @@ public class AdminController {
     @Autowired
     CourseServiceImpl courseService;
 
-    @Autowired
-    AttachmentServiceImpl attachmentService;
+
 
     @Autowired
     EnrollmentServiceImpl enrollmentService;
@@ -85,22 +84,10 @@ public class AdminController {
         return adminService.deleteCourse(adminId,courseId);
     }
 
-    //http://localhost:8080/instalearn/admin/A2/courses
-    @GetMapping("/A{adminId}/courses")
+    //http://localhost:8080/instalearn/admin/2/courses
+    @GetMapping("/{adminId}/courses")
     public ResponseEntity<List<Course>> getCourses(@PathVariable long adminId) {
         return courseService.findCoursesByAdmin(adminId);
-    }
-
-    //http://localhost:8080/instalearn/admin/A2/C2/attachments/add
-    @PostMapping("/A{adminId}/C{courseId}/attachments/add")
-    public ResponseEntity<String> addAttachments(@PathVariable long adminId, @PathVariable int courseId, @RequestBody Attachments attachments) {
-        return attachmentService.createAttachments(adminId,courseId,attachments);
-    }
-
-    //http://localhost:8080/instalearn/admin/A2/C2/AT1/attachments/edit
-    @PutMapping("/A{adminId}/C{courseId}/AT{attachmentId}/attachments/edit")
-    public ResponseEntity<String> updateAttachments(@PathVariable long adminId, @PathVariable int courseId,@PathVariable int attachmentId, @RequestBody Attachments attachments) {
-        return attachmentService.updateAttachments(adminId,courseId,attachmentId,attachments);
     }
 
     //http://localhost:8080/instalearn/admin/users

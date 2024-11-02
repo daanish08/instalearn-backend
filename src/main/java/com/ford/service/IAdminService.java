@@ -9,7 +9,7 @@ import java.util.Map;
 
 
 public interface IAdminService {
-//    public ResponseEntity<String> addAdmin(Admin admin);
+
     public ResponseEntity<Map<String,Object>> addAdmin(Admin admin);
     public ResponseEntity<String> deleteAdmin(int id);
     public ResponseEntity<List<Admin>> getAllAdmin();

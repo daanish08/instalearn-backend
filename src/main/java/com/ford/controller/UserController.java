@@ -20,14 +20,6 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/user")
 public class UserController {
-//    @Autowired
-//    AdminServiceImpl adminService;
-//
-    @Autowired
-    CourseServiceImpl courseService;
-
-    @Autowired
-    IUserRepository userRepository;
 
    @Autowired
    UserServiceImpl userService;

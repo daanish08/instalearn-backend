@@ -1,10 +1,6 @@
 package com.ford.service;
 
-import com.ford.entity.Admin;
-import com.ford.entity.Attachments;
-import com.ford.entity.Enrollment;
 import com.ford.respository.ICourseRepository;
-import com.ford.respository.IEnrollmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -48,6 +44,10 @@ public class CourseServiceImpl implements ICourseService {
         List<Course> courses = courseRepository.findAll();
         System.out.println(courses);
         return new ResponseEntity<>(courses, HttpStatus.OK);
+    }
+
+    public Long getCourseCount() {
+        return courseRepository.count(); // count() returns a long
     }
 
 //    public List<Course> getApprovedCoursesForUser(int userId) {

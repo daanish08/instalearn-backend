@@ -6,6 +6,7 @@ import com.ford.entity.Course;
 import com.ford.respository.IAdminRepository;
 import com.ford.respository.ICourseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -24,16 +25,6 @@ public class AdminServiceImpl implements IAdminService {
     @Autowired
     ICourseRepository courseRepository;
 
-
-//    @Override
-//    public ResponseEntity<String> addAdmin(Admin admin) {
-//       try{
-//           Admin newAdmin = adminRepository.save(admin);
-//           return ResponseEntity.status(HttpStatus.CREATED).body(newAdmin.toString()+" ADDED SUCCESFULLY");
-//       }catch(Exception e){
-//           return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
-//       }
-//    }
 
     @Override
     @PostMapping("/addAdmin")
@@ -69,30 +60,53 @@ public class AdminServiceImpl implements IAdminService {
     }
 
 
+//    @Transactional
+//    public ResponseEntity<String> createCourse(long adminId, Course course) {
+//        try {
+//            Admin admin = adminRepository.findByAdminId(adminId);
+//            if (admin == null) {
+//                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Admin not found");
+//            }
+//
+//            // Set the admin for the course
+//            course.setAdmin(admin);
+//
+//            // Save the course, which will also save the attachments due to cascade settings
+//            courseRepository.save(course);
+//
+//            return ResponseEntity.status(HttpStatus.CREATED).body("COURSE ADDED SUCCESSFULLY");
+//        } catch (Exception e) {
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error creating course: " + e.getMessage());
+//        }
+//    }
+
     @Transactional
     public ResponseEntity<String> createCourse(long adminId, Course course) {
+        System.out.println("Creating course with adminId: {}"+ adminId); // Add logging for adminId
+        System.out.println("Course data:"+ course); // Log the course object itself
+
         try {
             Admin admin = adminRepository.findByAdminId(adminId);
+            System.out.println(admin);
             if (admin == null) {
+//                log.warn("Admin not found for adminId: {}", adminId);
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Admin not found");
             }
-
-            // Set the admin for the course
             course.setAdmin(admin);
-
-            // Ensure attachments are associated with the course
-            for (Attachments attachment : course.getAttachments()) {
-                attachment.setCourse(course);
-            }
-
-            // Save the course, which will also save the attachments due to cascade settings
-            courseRepository.save(course);
-
+            System.out.println("Saving course...");
+            courseRepository.save(course); // Add logging before and after save
+            System.out.println("Course saved successfully.");
             return ResponseEntity.status(HttpStatus.CREATED).body("COURSE ADDED SUCCESSFULLY");
+        } catch (DataIntegrityViolationException e) {
+            System.out.println("Database error creating course: {}"+ e.getMessage()+ e); // Log the exception with stack trace
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Database error creating course: " + e.getMessage());
         } catch (Exception e) {
+            System.out.println("Error creating course: {}"+ e.getMessage()+ e); // Log the exception with stack trace
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error creating course: " + e.getMessage());
         }
     }
+
+
 
 
     @Override
@@ -114,7 +128,7 @@ public class AdminServiceImpl implements IAdminService {
     }
 
     @Override
-    public ResponseEntity<String> updateCourse(long admin, int courseId, Course course) {
+    public ResponseEntity<String> updateCourse(long adminId, int courseId, Course course) {
         Optional<Course> existingCourse = courseRepository.findById(courseId);
         if (!existingCourse.isPresent()) {
             return new ResponseEntity<>("Course not found", HttpStatus.NOT_FOUND);
@@ -126,6 +140,8 @@ public class AdminServiceImpl implements IAdminService {
         updatedCourse.setInstructor(course.getInstructor());
         updatedCourse.setDuration(course.getDuration());
         updatedCourse.setCourseURL(course.getCourseURL());
+        updatedCourse.setGithubURL(course.getGithubURL());
+        updatedCourse.setDriveURL(course.getDriveURL());
 
         // Save the updated course
         courseRepository.save(updatedCourse);
