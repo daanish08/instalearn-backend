@@ -46,6 +46,11 @@ public class UserServiceImpl implements IUserService{
     }
 
 
+    public Long getUsersCount() {
+        return userRepository.count(); // count() returns a long
+    }
+
+
     @Override
     public ResponseEntity<String> updateUser(User user, int id) {
         Optional<User> existingUserOptional = userRepository.findById(id);

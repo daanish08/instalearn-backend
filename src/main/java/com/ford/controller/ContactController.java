@@ -32,4 +32,12 @@ public class ContactController {
         return contactService.getFeedback();
     }
 
+
+    //http://localhost:8080/instalearn/admin/feedbacks/count
+    @GetMapping("/count")
+    public ResponseEntity<Long> getFeedbackCount(){
+        Long count = contactService.getFeedbackCount(); // Ensure this returns a Long
+        return ResponseEntity.ok(count);
+    }
+
 }

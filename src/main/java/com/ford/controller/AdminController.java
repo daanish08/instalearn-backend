@@ -103,6 +103,14 @@ public class AdminController {
         return userService.getAllUsers();
     }
 
+    //http://localhost:8080/instalearn/admin/usersCount
+    @GetMapping("/usersCount")
+    public ResponseEntity<Long> getUsersCount() {
+        Long count = userService.getUsersCount(); // Ensure this returns a Long
+        return ResponseEntity.ok(count); // Use .ok() for 200 status
+    }
+
+
 
 
     //Enrollments status in admin---------------------------------
