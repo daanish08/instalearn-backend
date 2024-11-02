@@ -2,14 +2,18 @@ package com.ford.controller;
 import com.ford.entity.*;
 import com.ford.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 //[DONE]
+@CrossOrigin("http://localhost:4200")
 @RestController
 @RequestMapping("/admin")
 public class AdminController {
@@ -34,10 +38,9 @@ public class AdminController {
     //Creation of Admin Data
     //http://localhost:8080/instalearn/admin/addAdmin
     @PostMapping("/addAdmin")
-    public ResponseEntity<String> addAdmin(@RequestBody Admin admin){
+    public ResponseEntity<Map<String,Object>> addAdmin(@RequestBody Admin admin){
         return adminService.addAdmin(admin);
     }
-
 
     //http://localhost:8080/instalearn/admin/deleteAdmin/1
     @DeleteMapping("/deleteAdmin/{id}")
@@ -58,7 +61,8 @@ public class AdminController {
     @PostMapping("A{adminId}/addCourse")
     public ResponseEntity<String> addNewCourse(@RequestBody Course course,@PathVariable long adminId){
         System.out.println(course);
-        return adminService.createCourse(adminId,course);
+        adminService.createCourse(adminId,course);
+        return ResponseEntity.status(HttpStatus.CREATED).body("Course added successfully");
     }
 
     //http://localhost:8080/instalearn/admin/A2/C1/update
@@ -98,6 +102,14 @@ public class AdminController {
     public ResponseEntity<List<User>> getUsers() {
         return userService.getAllUsers();
     }
+
+    //http://localhost:8080/instalearn/admin/usersCount
+    @GetMapping("/usersCount")
+    public ResponseEntity<Long> getUsersCount() {
+        Long count = userService.getUsersCount(); // Ensure this returns a Long
+        return ResponseEntity.ok(count); // Use .ok() for 200 status
+    }
+
 
 
 

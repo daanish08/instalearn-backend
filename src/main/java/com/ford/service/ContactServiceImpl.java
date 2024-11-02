@@ -32,4 +32,8 @@ public class ContactServiceImpl implements IContactService{
     public ResponseEntity<List<Contact>> getFeedback() {
         return ResponseEntity.status(HttpStatus.CREATED).body( contactRepository.findAll());
     }
+
+    public Long getFeedbackCount() {
+        return contactRepository.count(); // count() returns a long
+    }
 }

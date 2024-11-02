@@ -9,7 +9,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -19,13 +21,12 @@ public class UserServiceImpl implements IUserService{
     IUserRepository userRepository;
     
     @Override
-    public ResponseEntity<String> addUser(User user) {
-        try{
-            User newUser = userRepository.save(user);
-            return ResponseEntity.status(HttpStatus.CREATED).body(newUser.toString()+" ADDED NEW USER SUCCESFULLY");
-        }catch(Exception e){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
-        }
+    public ResponseEntity<Map<String,Object>> addUser(User user) {
+        User newUser = userRepository.save(user);
+        Map<String, Object> response = new HashMap<>();
+        response.put("message", "User added successfully");
+        response.put("user", newUser); // Assuming 'admin' is the object you want to return
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @Override
@@ -45,6 +46,11 @@ public class UserServiceImpl implements IUserService{
     }
 
 
+    public Long getUsersCount() {
+        return userRepository.count(); // count() returns a long
+    }
+
+
     @Override
     public ResponseEntity<String> updateUser(User user, int id) {
         Optional<User> existingUserOptional = userRepository.findById(id);
@@ -57,6 +63,7 @@ public class UserServiceImpl implements IUserService{
         // Correctly set the values using setter methods
         updatedUser.setUserName(user.getUserName());
         updatedUser.setEmail(user.getEmail());
+        updatedUser.setPhone(user.getPhone());
         updatedUser.setPassword(user.getPassword());
 
         userRepository.save(updatedUser);
