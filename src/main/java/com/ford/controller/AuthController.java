@@ -2,6 +2,8 @@ package com.ford.controller;
 
 import com.ford.TokenUtil.JwtUtil;
 import com.ford.dto.AuthenticationRequest;
+import com.ford.entity.Admin;
+import com.ford.entity.User;
 import com.ford.respository.IAdminRepository;
 import com.ford.respository.IUserRepository;
 import com.ford.service.AppUserDetailsService;
@@ -44,23 +46,28 @@ public class AuthController {
         );
 
         final UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getEmail());
-//        System.out.println(userDetails.getAuthorities().stream().toList().stream().findFirst().toString());
-//        String r = userDetails.getAuthorities().stream().toList().stream().findFirst().toString();
-        String role = getRoleForUser(authenticationRequest.getEmail());
-        System.out.println("email : " + userDetails.getUsername());
-        final String jwt = jwtUtil.generateToken(userDetails.getUsername(), role);
+        String token = getToken(userDetails.getUsername());
 
         Map<String, String> response = new HashMap<>();
-        response.put("jwt", jwt);
+        response.put("jwt", token);
         return response;
     }
 
-    private String getRoleForUser(String username) {
-        if (adminRepository.findByEmail(username) != null) {
-            return "ADMIN";
-        } else if (userRepository.findByEmail(username) != null) {
-            return "USER";
+    private String getToken(String email) {
+        Admin admin = adminRepository.findByEmail(email);
+        User user = userRepository.findByEmail(email);
+
+        String role;
+        String userId;
+        if (admin != null) {
+            role = "ADMIN";
+            userId = String.valueOf(admin.getAdminId());
+            return jwtUtil.generateToken(userId, role);
+        } else if (user != null) {
+            role = "USER";
+            userId = String.valueOf(user.getUserId());
+            return jwtUtil.generateToken(userId, role);
         }
-        throw new UsernameNotFoundException("User not found with username: " + username);
+        throw new UsernameNotFoundException("User not found with username: " + email);
     }
 }
