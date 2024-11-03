@@ -1,6 +1,7 @@
 package com.ford.service;
 
 
+import com.ford.entity.Admin;
 import com.ford.respository.IAdminRepository;
 import com.ford.respository.IUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,12 +23,14 @@ public class AppUserDetailsService implements UserDetailsService {
     private IAdminRepository adminRepository;
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        if (adminRepository.findByName(username) != null) {
-            return new User(username, "{noop}" + adminRepository.findByName(username).getPassword(), Collections.singletonList(() -> "ROLE_ADMIN"));
-        } else if (userRepository.findByUserName(username) != null) {
-            return new User(username, "{noop}" + userRepository.findByUserName(username).getPassword(), Collections.singletonList(() -> "ROLE_USER"));
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        Admin admin = adminRepository.findByEmail(email);
+        com.ford.entity.User user = userRepository.findByEmail(email);
+        if (admin != null) {
+            return new User(email, "{noop}" + admin.getPassword(), Collections.singletonList(() -> "ROLE_ADMIN"));
+        } else if (user != null) {
+            return new User(email, "{noop}" + user.getPassword(), Collections.singletonList(() -> "ROLE_USER"));
         }
-        throw new UsernameNotFoundException("User not found with username: " + username);
+        throw new UsernameNotFoundException("User not found with email: " + email);
     }
 }
