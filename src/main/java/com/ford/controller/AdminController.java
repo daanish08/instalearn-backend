@@ -25,8 +25,6 @@ public class AdminController {
     @Autowired
     CourseServiceImpl courseService;
 
-
-
     @Autowired
     EnrollmentServiceImpl enrollmentService;
 
@@ -66,8 +64,7 @@ public class AdminController {
     @PostMapping("A{adminId}/addCourse")
     public ResponseEntity<String> addNewCourse(@RequestBody Course course,@PathVariable long adminId){
         System.out.println(course);
-        adminService.createCourse(adminId,course);
-        return ResponseEntity.status(HttpStatus.CREATED).body("Course added successfully");
+        return adminService.createCourse(adminId,course);
     }
 
     //http://localhost:8080/instalearn/admin/A2/C1/update

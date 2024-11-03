@@ -23,8 +23,8 @@ public class CourseController {
         return courseService.getAllCourses();
     }
 
-    //http://localhost:8080/instalearn/api/v1/course/C{courseId}
-    @GetMapping("/C{courseId}")
+    //http://localhost:8080/instalearn/api/v1/course/{courseId}
+    @GetMapping("/{courseId}")
     public ResponseEntity<Course> getCourseDetails(@PathVariable int courseId){
         return courseService.findCourseByCourseId(courseId);
     }

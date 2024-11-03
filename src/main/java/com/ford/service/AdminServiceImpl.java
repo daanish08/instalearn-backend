@@ -60,52 +60,55 @@ public class AdminServiceImpl implements IAdminService {
     }
 
 
-//    @Transactional
-//    public ResponseEntity<String> createCourse(long adminId, Course course) {
-//        try {
-//            Admin admin = adminRepository.findByAdminId(adminId);
-//            if (admin == null) {
-//                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Admin not found");
-//            }
-//
-//            // Set the admin for the course
-//            course.setAdmin(admin);
-//
-//            // Save the course, which will also save the attachments due to cascade settings
-//            courseRepository.save(course);
-//
-//            return ResponseEntity.status(HttpStatus.CREATED).body("COURSE ADDED SUCCESSFULLY");
-//        } catch (Exception e) {
-//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error creating course: " + e.getMessage());
-//        }
-//    }
-
     @Transactional
     public ResponseEntity<String> createCourse(long adminId, Course course) {
-        System.out.println("Creating course with adminId: {}"+ adminId); // Add logging for adminId
-        System.out.println("Course data:"+ course); // Log the course object itself
-
         try {
             Admin admin = adminRepository.findByAdminId(adminId);
-            System.out.println(admin);
             if (admin == null) {
-//                log.warn("Admin not found for adminId: {}", adminId);
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Admin not found");
             }
+
+            // Set the admin for the course
             course.setAdmin(admin);
-            System.out.println("Saving course...");
-            courseRepository.save(course); // Add logging before and after save
-            System.out.println("Course saved successfully.");
+
+            // Save the course, which will also save the attachments due to cascade settings
+            courseRepository.save(course);
+
             return ResponseEntity.status(HttpStatus.CREATED).body("COURSE ADDED SUCCESSFULLY");
-        } catch (DataIntegrityViolationException e) {
-            System.out.println("Database error creating course: {}"+ e.getMessage()+ e); // Log the exception with stack trace
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Database error creating course: " + e.getMessage());
         } catch (Exception e) {
-            System.out.println("Error creating course: {}"+ e.getMessage()+ e); // Log the exception with stack trace
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error creating course: " + e.getMessage());
         }
     }
 
+    //@Transactional
+//    public ResponseEntity<Map<String, Object>> createCourse(long adminId, Course course) {
+//        System.out.println("Creating course with adminId: " + adminId);
+//        System.out.println("Course data: " + course);
+//
+//        try {
+//            Admin admin = adminRepository.findByAdminId(adminId);
+//            if (admin == null) {
+//                System.out.println("Admin not found for adminId: " + adminId);
+//                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", "Admin not found"));
+//            }
+//            course.setAdmin(admin);
+//            System.out.println("Saving course...");
+//            Course savedCourse = courseRepository.save(course);
+//            System.out.println("Course saved successfully with ID: " + savedCourse.getId());
+//            Map<String, Object> response = new HashMap<>();
+//            response.put("courseId", savedCourse.getId());
+//            response.put("message", "Course created successfully");
+//            return ResponseEntity.status(HttpStatus.CREATED).body(response);
+//        } catch (DataIntegrityViolationException e) {
+//            System.err.println("Database error creating course: " + e.getMessage() + ", stack trace: " + e);
+//            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+//                    .body(Map.of("error", "Database error creating course: " + e.getMessage()));
+//        } catch (Exception e) {
+//            System.err.println("Error creating course: " + e.getMessage() + ", stack trace: " + e);
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+//                    .body(Map.of("error", "Error creating course: " + e.getMessage()));
+//        }
+//    }
 
 
 
