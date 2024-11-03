@@ -29,10 +29,10 @@ public class AdminServiceImpl implements IAdminService {
     @Override
     @PostMapping("/addAdmin")
     public ResponseEntity<Map<String, Object>> addAdmin(@RequestBody Admin admin) {
-        // Logic to add admin
+        Admin savedAdmin = adminRepository.save(admin);
         Map<String, Object> response = new HashMap<>();
         response.put("message", "Admin added successfully");
-        response.put("admin", admin); // Assuming 'admin' is the object you want to return
+        response.put("admin", savedAdmin);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }

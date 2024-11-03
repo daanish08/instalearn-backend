@@ -15,6 +15,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
@@ -34,26 +37,28 @@ public class AuthController {
     private IUserRepository userRepository;
 
     @PostMapping("/login")
-    public String createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest) throws Exception {
+    public Map<String, String> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest) throws Exception {
         System.out.println(authenticationRequest);
         authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(authenticationRequest.getUsername(), authenticationRequest.getPassword())
+                new UsernamePasswordAuthenticationToken(authenticationRequest.getEmail(), authenticationRequest.getPassword())
         );
 
-        final UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
-        System.out.println(userDetails.getAuthorities().stream().toList().stream().findFirst().toString());
-        String r = userDetails.getAuthorities().stream().toList().stream().findFirst().toString();
-        String role = getRoleForUser(authenticationRequest.getUsername());
-        System.out.println("username : " + userDetails.getUsername());
+        final UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getEmail());
+//        System.out.println(userDetails.getAuthorities().stream().toList().stream().findFirst().toString());
+//        String r = userDetails.getAuthorities().stream().toList().stream().findFirst().toString();
+        String role = getRoleForUser(authenticationRequest.getEmail());
+        System.out.println("email : " + userDetails.getUsername());
         final String jwt = jwtUtil.generateToken(userDetails.getUsername(), role);
 
-        return jwt;
+        Map<String, String> response = new HashMap<>();
+        response.put("jwt", jwt);
+        return response;
     }
 
     private String getRoleForUser(String username) {
-        if (adminRepository.findByName(username) != null) {
+        if (adminRepository.findByEmail(username) != null) {
             return "ADMIN";
-        } else if (userRepository.findByUserName(username) != null) {
+        } else if (userRepository.findByEmail(username) != null) {
             return "USER";
         }
         throw new UsernameNotFoundException("User not found with username: " + username);

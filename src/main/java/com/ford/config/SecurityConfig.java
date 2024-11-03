@@ -29,7 +29,7 @@ public class SecurityConfig {
             .authorizeHttpRequests(authz ->
                     // http paths access config
                     authz
-                            .requestMatchers("/auth/**").permitAll()
+//                            .requestMatchers("/auth/**").permitAll()
 //                            .requestMatchers("/admin/**").hasRole("ADMIN")
                             .anyRequest().permitAll()
             )
