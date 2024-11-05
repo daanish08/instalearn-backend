@@ -1,12 +1,10 @@
 package com.ford.service;
 
 import com.ford.entity.Admin;
-import com.ford.entity.Attachments;
 import com.ford.entity.Course;
 import com.ford.respository.IAdminRepository;
 import com.ford.respository.ICourseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;

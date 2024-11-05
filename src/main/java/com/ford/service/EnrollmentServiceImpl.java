@@ -1,12 +1,10 @@
 package com.ford.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ford.dto.EnrollmentDTO;
 import com.ford.entity.*;
 import com.ford.exception.CourseNotFoundException;
 import com.ford.exception.DataNotFoundException;
-import com.ford.exception.EnrollmentNotFoundException;
 import com.ford.respository.ICourseRepository;
 import com.ford.respository.IEnrollmentRepository;
 import com.ford.respository.IUserRepository;
@@ -15,14 +13,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class EnrollmentServiceImpl implements IEnrollmentService{
@@ -197,13 +192,8 @@ public class EnrollmentServiceImpl implements IEnrollmentService{
         return enrollmentRepository.countEnrollmentsByUserId(userId);
     }
 
-    public List<EnrollmentDTO> getAllEnrollmentDetails() {
-        List<Enrollment> enrollments = enrollmentRepository.findAll();
-        System.out.println("Number of enrollments found: " + enrollments.size()); //Added logging
-        System.out.println(enrollments);
-        return enrollments.stream()
-                .map(this::mapToEnrollmentDTO)
-                .collect(Collectors.toList());
+    public List<Enrollment> getAllEnrollments() {
+        return enrollmentRepository.findAll();
     }
 
      private EnrollmentDTO mapToEnrollmentDTO(Enrollment enrollment) {
@@ -211,8 +201,8 @@ public class EnrollmentServiceImpl implements IEnrollmentService{
         return new EnrollmentDTO(
                 enrollment.getEnrollmentId(),
                 enrollment.getCourse().getCourseName(),
-                enrollment.getStatus().toString()
-                );
+                enrollment.getStatus().toString(),
+                enrollment.getStatus());
     }
 
 

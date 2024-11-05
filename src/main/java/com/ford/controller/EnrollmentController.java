@@ -44,15 +44,20 @@ public class EnrollmentController {
         return ResponseEntity.ok(count);
     }
 
-    //http://localhost:8080/instalearn/api/v1/enrollments
-    @GetMapping("enrollments")
-    public ResponseEntity<List<EnrollmentDTO>>GetList(){
-//        System.out.println(userId);
-        List<EnrollmentDTO> count= enrollmentService.getAllEnrollmentDetails();
-        System.out.println(count);
-        return ResponseEntity.ok(count);
-    }
-
+//    http://localhost:8080/instalearn/api/v1/enrollments
+@GetMapping("/enrollments")
+public ResponseEntity<List<EnrollmentDTO>> getEnrollments() {
+    List<EnrollmentDTO> enrollments = enrollmentService.getAllEnrollments()
+            .stream()
+            .map(enrollment -> new EnrollmentDTO(
+                    enrollment.getEnrollmentId(),
+                    enrollment.getUser().getUserName(), // Assuming you have a user relationship
+                    enrollment.getCourse().getCourseName(),  // Assuming you have a course relationship
+                    enrollment.getStatus()
+            ))
+            .collect(Collectors.toList());
+    return ResponseEntity.ok(enrollments);
+}
 
     //http://localhost:8080/instalearn/api/v1/2/enroll/courses
 //    @GetMapping("{userId}/enroll/courses")

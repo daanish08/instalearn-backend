@@ -1,8 +1,6 @@
 package com.ford.service;
 
-import com.ford.entity.Admin;
 import com.ford.entity.Contact;
-import com.ford.respository.IAttachmentRepository;
 import com.ford.respository.IContactRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

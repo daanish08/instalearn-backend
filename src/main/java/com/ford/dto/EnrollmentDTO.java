@@ -1,5 +1,5 @@
 package com.ford.dto;
-import lombok.AllArgsConstructor;
+import com.ford.entity.EnrollmentStatus;
 import lombok.Data;
 
 
@@ -8,10 +8,10 @@ import lombok.Data;
 public class EnrollmentDTO {
     private Integer enrollmentId;
     private String courseName;
-    private String status;
+    private EnrollmentStatus status;
     //private String action;
 
-    public EnrollmentDTO(Integer enrollmentId, String courseName, String status) {
+    public EnrollmentDTO(Integer enrollmentId, String courseName, String status, EnrollmentStatus enrollmentStatus) {
     }
 //    private String certificate;
 }
