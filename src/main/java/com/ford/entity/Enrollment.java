@@ -26,7 +26,6 @@ public class Enrollment {
     private User user;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JsonIgnore
     @JoinColumn(name = "CourseID", referencedColumnName = "CourseID")
     private Course course;
 

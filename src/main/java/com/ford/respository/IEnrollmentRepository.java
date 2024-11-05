@@ -29,6 +29,9 @@ public interface IEnrollmentRepository extends JpaRepository<Enrollment,Integer>
 
     @Query("SELECT e FROM Enrollment e WHERE e.course.admin.adminId = :adminId AND e.status = 'PENDING'")
     List<Enrollment> findPendingEnrollmentsByAdminId(@Param("adminId") long adminId);
+
+    @Query("SELECT e FROM Enrollment e WHERE e.user.userId = :userId")
+    List<Enrollment> findEnrollmentsByUserId(@Param("userId") long userId);
 //    List<Course> findByStatusAndUserId(int userId,String Status);
 
 

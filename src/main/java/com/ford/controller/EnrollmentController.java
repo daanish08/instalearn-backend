@@ -44,31 +44,41 @@ public class EnrollmentController {
         return ResponseEntity.ok(count);
     }
 
-//    http://localhost:8080/instalearn/api/v1/enrollments
-@GetMapping("/enrollments")
-public ResponseEntity<List<EnrollmentDTO>> getEnrollments() {
-    List<EnrollmentDTO> enrollments = enrollmentService.getAllEnrollments()
-            .stream()
-            .map(enrollment -> new EnrollmentDTO(
-                    enrollment.getEnrollmentId(),
-                    enrollment.getUser().getUserName(), // Assuming you have a user relationship
-                    enrollment.getCourse().getCourseName(),  // Assuming you have a course relationship
-                    enrollment.getStatus()
-            ))
-            .collect(Collectors.toList());
-    return ResponseEntity.ok(enrollments);
-}
+    //    http://localhost:8080/instalearn/api/v1/enrollments
+    @GetMapping("/enrollments")
+    public ResponseEntity<List<EnrollmentDTO>> getEnrollments() {
+        List<EnrollmentDTO> enrollments = enrollmentService.getAllEnrollments()
+                .stream()
+                .map(enrollment -> new EnrollmentDTO(
+                        enrollment.getEnrollmentId(),
+                        enrollment.getUser().getUserName(), // Assuming you have a user relationship
+                        enrollment.getCourse().getCourseName(),  // Assuming you have a course relationship
+                        enrollment.getStatus()
+                ))
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(enrollments);
+    }
 
     //http://localhost:8080/instalearn/api/v1/2/enroll/courses
-//    @GetMapping("{userId}/enroll/courses")
-//    public ResponseEntity<List<Enrollment>> GetEnrolledCourseDetails(@PathVariable int userId){
-//        System.out.println(userId);
-//
-//        //errrororoororor
-//        List<Enrollment> data= (List<Enrollment>) enrollmentService.findPendingEnrollmentsByAdminId(userId);
-//        System.out.println(data);
-//        return ResponseEntity.ok(data);
-//    }
+    @GetMapping("{userId}/enroll/courses")
+    public ResponseEntity<List<Enrollment>> GetEnrolledCourseDetails(@PathVariable int userId){
+        System.out.println(userId);
+
+        //errrororoororor
+        List<Enrollment> data= (List<Enrollment>) enrollmentService.findPendingEnrollmentsByAdminId(userId);
+        System.out.println(data);
+        return ResponseEntity.ok(data);
+    }
+
+    @GetMapping("{userId}/enroll/courses/all")
+    public ResponseEntity<List<Enrollment>> GetEnrolledCourseDetailsForUser(@PathVariable int userId){
+        System.out.println(userId);
+
+        //errrororoororor
+        List<Enrollment> data= (List<Enrollment>) enrollmentService.findEnrollmentsByUserId(userId);
+        System.out.println(data);
+        return ResponseEntity.ok(data);
+    }
 
 
 

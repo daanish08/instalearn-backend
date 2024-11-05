@@ -119,6 +119,16 @@ public class EnrollmentServiceImpl implements IEnrollmentService{
         }
     }
 
+    @Transactional(readOnly = true)
+    public List<Enrollment> findEnrollmentsByUserId(long userId) {
+        try {
+            return enrollmentRepository.findEnrollmentsByUserId(userId);
+        } catch (Exception e) {
+            // Log the exception appropriately
+            throw new RuntimeException("Error fetching pending enrollments: " + e.getMessage(), e);
+        }
+    }
+
     public ResponseEntity<String> approveEnrollment(int enrollmentId, long adminId) {
         try {
             // Fetch the enrollment
