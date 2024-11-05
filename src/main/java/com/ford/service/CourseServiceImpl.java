@@ -23,7 +23,7 @@ public class CourseServiceImpl implements ICourseService {
 
     @Override
     public ResponseEntity<List<Course>> findCoursesByAdmin(long adminId) {
-        List<Course> courses = courseRepository.findByAdmin_AdminId(adminId);
+        List<Course> courses = courseRepository.findAllByAdminIdOrNull(adminId);
         System.out.println(courses);
         if (courses.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);

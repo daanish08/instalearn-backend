@@ -12,7 +12,8 @@ import java.util.List;
 
 @Repository
 public interface IEnrollmentRepository extends JpaRepository<Enrollment,Integer> {
-    List<Enrollment> findByStatus(String status);
+
+    List<Enrollment> findAll();
 
     @Query("SELECT COUNT(e) FROM Enrollment e WHERE e.user.userId = :userId")
     long countEnrollmentsByUserId(@Param("userId") Integer userId);

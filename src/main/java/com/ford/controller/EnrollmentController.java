@@ -44,6 +44,16 @@ public class EnrollmentController {
         return ResponseEntity.ok(count);
     }
 
+    //http://localhost:8080/instalearn/api/v1/enrollments
+    @GetMapping("enrollments")
+    public ResponseEntity<List<EnrollmentDTO>>GetList(){
+//        System.out.println(userId);
+        List<EnrollmentDTO> count= enrollmentService.getAllEnrollmentDetails();
+        System.out.println(count);
+        return ResponseEntity.ok(count);
+    }
+
+
     //http://localhost:8080/instalearn/api/v1/2/enroll/courses
 //    @GetMapping("{userId}/enroll/courses")
 //    public ResponseEntity<List<Enrollment>> GetEnrolledCourseDetails(@PathVariable int userId){

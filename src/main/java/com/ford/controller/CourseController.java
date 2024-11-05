@@ -19,37 +19,27 @@ public class CourseController {
 
     //http://localhost:8080/instalearn/api/v1/course/list
     @GetMapping("/list")
-    public ResponseEntity<List<Course>> listCourses(){
+    public ResponseEntity<List<Course>> listCourses() {
         return courseService.getAllCourses();
     }
 
     //http://localhost:8080/instalearn/api/v1/course/{courseId}
     @GetMapping("/{courseId}")
-    public ResponseEntity<Course> getCourseDetails(@PathVariable int courseId){
+    public ResponseEntity<Course> getCourseDetails(@PathVariable int courseId) {
         return courseService.findCourseByCourseId(courseId);
     }
 
     //http://localhost:8080/instalearn/api/v1/course/A1/count
     @GetMapping("A{adminId}/count")
-    public ResponseEntity<Long> getCoursesCount(@PathVariable long adminId){
+    public ResponseEntity<Long> getCoursesCount(@PathVariable long adminId) {
         Long count = courseService.getCourseCount(adminId); // Ensure this returns a Long
         return ResponseEntity.ok(count);
     }
+
     //http://localhost:8080/instalearn/api/v1/course/count
     @GetMapping("/count")
-    public ResponseEntity<Integer> getCoursesCount(){
+    public ResponseEntity<Integer> getCoursesCount() {
         int count = courseService.getTotalCourseCount(); // Ensure this returns a Long
         return ResponseEntity.ok(count);
     }
-
-
-
-//    @GetMapping("/approved")
-//    public ResponseEntity<List<Course>> getApprovedCourses(@RequestParam int userId) {
-//        List<Course> courses = courseService.getApprovedCoursesForUser(userId);
-//        return ResponseEntity.ok(courses);
-//    }
-
-
-
 }

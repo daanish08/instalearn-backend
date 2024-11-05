@@ -82,7 +82,7 @@ public class AdminController {
     }
 
     //http://localhost:8080/instalearn/admin/2/courses
-    @GetMapping("/A{adminId}/courses")
+    @GetMapping("/{adminId}/courses")
     public ResponseEntity<List<Course>> getCourses(@PathVariable long adminId) {
         return courseService.findCoursesByAdmin(adminId);
     }

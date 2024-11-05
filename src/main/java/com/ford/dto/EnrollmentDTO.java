@@ -1,14 +1,17 @@
 package com.ford.dto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
-@Data // Lombok annotation for getters, setters, toString, etc.
-@AllArgsConstructor
-@NoArgsConstructor
+
+
+@Data
 public class EnrollmentDTO {
-    private int id;
-    private String username;
-    private String courseTitle;
+    private Integer enrollmentId;
+    private String courseName;
     private String status;
+    //private String action;
+
+    public EnrollmentDTO(Integer enrollmentId, String courseName, String status) {
+    }
+//    private String certificate;
 }

@@ -197,6 +197,25 @@ public class EnrollmentServiceImpl implements IEnrollmentService{
         return enrollmentRepository.countEnrollmentsByUserId(userId);
     }
 
+    public List<EnrollmentDTO> getAllEnrollmentDetails() {
+        List<Enrollment> enrollments = enrollmentRepository.findAll();
+        System.out.println("Number of enrollments found: " + enrollments.size()); //Added logging
+        System.out.println(enrollments);
+        return enrollments.stream()
+                .map(this::mapToEnrollmentDTO)
+                .collect(Collectors.toList());
+    }
+
+     private EnrollmentDTO mapToEnrollmentDTO(Enrollment enrollment) {
+        System.out.println(enrollment);
+        return new EnrollmentDTO(
+                enrollment.getEnrollmentId(),
+                enrollment.getCourse().getCourseName(),
+                enrollment.getStatus().toString()
+                );
+    }
+
+
 //    public ResponseEntity<String> findDetailsByUserId(@PathVariable int userId) {
 //        try {
 //            List<EnrollmentDTO> enrollments = enrollmentRepository.findEnrollmentDetailsByUserId(userId);

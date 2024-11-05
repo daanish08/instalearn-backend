@@ -8,7 +8,9 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface ICourseRepository extends JpaRepository<Course, Integer> {
-    List<Course> findByAdmin_AdminId(long adminId);
+
+    @Query("SELECT c FROM Course c WHERE c.admin.adminId = :adminId OR c.admin IS NULL")
+    List<Course> findAllByAdminIdOrNull(long adminId);
 //    Long countByAdminId(long adminId);
 
     @Query("SELECT COUNT(c) FROM Course c WHERE c.admin.adminId = :adminId")
