@@ -3,6 +3,7 @@ package com.ford.service;
 import com.ford.entity.Admin;
 import com.ford.entity.User;
 import com.ford.entity.User;
+import com.ford.respository.ICourseRepository;
 import com.ford.respository.IUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,7 +17,9 @@ public class UserServiceImpl implements IUserService{
 
     @Autowired
     IUserRepository userRepository;
-    
+    @Autowired
+    private ICourseRepository iCourseRepository;
+
     @Override
     public ResponseEntity<Map<String,Object>> addUser(User user) {
         User newUser = userRepository.save(user);

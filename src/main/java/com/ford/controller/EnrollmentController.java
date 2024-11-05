@@ -1,20 +1,24 @@
 package com.ford.controller;
 
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.ford.dto.EnrollmentDTO;
 import com.ford.entity.Admin;
 import com.ford.entity.Course;
 import com.ford.entity.Enrollment;
 import com.ford.service.CourseServiceImpl;
 import com.ford.service.EnrollmentServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("api/v1/course")
+@RequestMapping("api/v1/")
 public class EnrollmentController {
 
     @Autowired
@@ -29,6 +33,30 @@ public class EnrollmentController {
     public ResponseEntity<String> EnrollNewCourse(@PathVariable int userId,@PathVariable int courseId){
         return enrollmentService.addEnrollment(courseId,userId);
     }
+
+
+    //http://localhost:8080/instalearn/api/v1/2/enroll/count
+    @GetMapping("{userId}/enroll/count")
+    public ResponseEntity<Long> GetEnrolledCourseCount(@PathVariable int userId){
+        System.out.println(userId);
+        long count= enrollmentService.getEnrolledCountByUserId(userId);
+        System.out.println(count);
+        return ResponseEntity.ok(count);
+    }
+
+    //http://localhost:8080/instalearn/api/v1/2/enroll/courses
+//    @GetMapping("{userId}/enroll/courses")
+//    public ResponseEntity<List<Enrollment>> GetEnrolledCourseDetails(@PathVariable int userId){
+//        System.out.println(userId);
+//
+//        //errrororoororor
+//        List<Enrollment> data= (List<Enrollment>) enrollmentService.findPendingEnrollmentsByAdminId(userId);
+//        System.out.println(data);
+//        return ResponseEntity.ok(data);
+//    }
+
+
+
 
 
 

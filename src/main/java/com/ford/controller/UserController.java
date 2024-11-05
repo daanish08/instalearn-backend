@@ -51,6 +51,10 @@ public class UserController {
         return userService.getUserById(userId);
     }
 
+
+
+
+
     // User Data by id
     //http://localhost:8080/instalearn/user/U{userId}/list
 //    @GetMapping("/user/1")

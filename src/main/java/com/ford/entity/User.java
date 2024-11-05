@@ -1,5 +1,6 @@
 package com.ford.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -31,6 +32,7 @@ public class User {
     @Column(name = "email", nullable = false, unique = true, length = 255)
     private String email;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Enrollment> enrollments;
 }

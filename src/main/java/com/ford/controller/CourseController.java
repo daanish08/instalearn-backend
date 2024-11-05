@@ -29,12 +29,19 @@ public class CourseController {
         return courseService.findCourseByCourseId(courseId);
     }
 
-    //http://localhost:8080/instalearn/api/v1/course/count
-    @GetMapping("/count")
-    public ResponseEntity<Long> getCoursesCount(){
-        Long count = courseService.getCourseCount(); // Ensure this returns a Long
+    //http://localhost:8080/instalearn/api/v1/course/A1/count
+    @GetMapping("A{adminId}/count")
+    public ResponseEntity<Long> getCoursesCount(@PathVariable long adminId){
+        Long count = courseService.getCourseCount(adminId); // Ensure this returns a Long
         return ResponseEntity.ok(count);
     }
+    //http://localhost:8080/instalearn/api/v1/course/count
+    @GetMapping("/count")
+    public ResponseEntity<Integer> getCoursesCount(){
+        int count = courseService.getTotalCourseCount(); // Ensure this returns a Long
+        return ResponseEntity.ok(count);
+    }
+
 
 
 //    @GetMapping("/approved")

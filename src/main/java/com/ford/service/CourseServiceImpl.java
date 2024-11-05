@@ -24,6 +24,7 @@ public class CourseServiceImpl implements ICourseService {
     @Override
     public ResponseEntity<List<Course>> findCoursesByAdmin(long adminId) {
         List<Course> courses = courseRepository.findByAdmin_AdminId(adminId);
+        System.out.println(courses);
         if (courses.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
@@ -46,8 +47,12 @@ public class CourseServiceImpl implements ICourseService {
         return new ResponseEntity<>(courses, HttpStatus.OK);
     }
 
-    public Long getCourseCount() {
-        return courseRepository.count(); // count() returns a long
+    public Long getCourseCount(long adminId) {
+        return courseRepository.countCoursesByAdminId(adminId); // count() returns a long
+    }
+
+    public int getTotalCourseCount(){
+        return (int) courseRepository.count();
     }
 
 //    public List<Course> getApprovedCoursesForUser(int userId) {

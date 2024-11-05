@@ -1,5 +1,8 @@
 package com.ford.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ford.dto.EnrollmentDTO;
 import com.ford.entity.*;
 import com.ford.exception.CourseNotFoundException;
 import com.ford.exception.DataNotFoundException;
@@ -12,12 +15,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class EnrollmentServiceImpl implements IEnrollmentService{
@@ -27,6 +32,12 @@ public class EnrollmentServiceImpl implements IEnrollmentService{
     private IUserRepository userRepository;
     @Autowired
     private ICourseRepository courseRepository;
+
+    private final ObjectMapper objectMapper;
+
+    public EnrollmentServiceImpl(ObjectMapper objectMapper) {
+        this.objectMapper = objectMapper;
+    }
 
     @Override
     public ResponseEntity<String> addEnrollment(int courseId, int userId) {
@@ -89,14 +100,24 @@ public class EnrollmentServiceImpl implements IEnrollmentService{
 //        }
 //    }
 
+//    @Transactional(readOnly = true)
+//    public List<Enrollment> findPendingEnrollmentsByAdminId(long adminId) {
+//        try {
+//            // Spring Data JPA will automatically generate the JPQL query
+//            return enrollmentRepository.findAll()
+//                    .stream()
+//                    .filter(e ->( e.getCourse().getAdmin().getAdminId()==(adminId)) && e.getStatus().equals("PENDING"))
+//                    .toList();
+//        } catch (Exception e) {
+//            // Log the exception appropriately
+//            throw new RuntimeException("Error fetching pending enrollments: " + e.getMessage(), e);
+//        }
+//    }
+
     @Transactional(readOnly = true)
     public List<Enrollment> findPendingEnrollmentsByAdminId(long adminId) {
         try {
-            // Spring Data JPA will automatically generate the JPQL query
-            return enrollmentRepository.findAll()
-                    .stream()
-                    .filter(e ->( e.getCourse().getAdmin().getAdminId()==(adminId)) && e.getStatus().equals("PENDING"))
-                    .toList();
+            return enrollmentRepository.findPendingEnrollmentsByAdminId(adminId);
         } catch (Exception e) {
             // Log the exception appropriately
             throw new RuntimeException("Error fetching pending enrollments: " + e.getMessage(), e);
@@ -171,5 +192,43 @@ public class EnrollmentServiceImpl implements IEnrollmentService{
             return new ResponseEntity<>("An error occurred while approving the enrollment", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    public long getEnrolledCountByUserId(int userId) {
+        return enrollmentRepository.countEnrollmentsByUserId(userId);
+    }
+
+//    public ResponseEntity<String> findDetailsByUserId(@PathVariable int userId) {
+//        try {
+//            List<EnrollmentDTO> enrollments = enrollmentRepository.findEnrollmentDetailsByUserId(userId);
+//
+//            if (enrollments.isEmpty()) {
+//                return ResponseEntity.notFound().build();
+//            }
+//
+//            // Map Enrollment entities to EnrollmentDTO objects
+//            List<EnrollmentDTO> enrollmentDTOs = enrollments.stream()
+//                    .map(enrollment -> new EnrollmentDTO(
+//                            enrollment.getEnrollmentId(), // Assuming enrollmentId is the ID
+//                            enrollment.getUser().getUserName(), // Access username from User entity
+//                            enrollment.getCourse().getCourseName(), // Access courseTitle from Course entity
+//                            enrollment.getStatus().name() // Get the name of the EnrollmentStatus enum
+//                    ))
+//                    .collect(Collectors.toList());
+//
+//            // Serialize the list of DTOs to JSON
+//            String jsonResponse = objectMapper.writeValueAsString(enrollmentDTOs);
+//            return ResponseEntity.ok(jsonResponse);
+//
+//        } catch (JsonProcessingException e) {
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+//                    .body("Error serializing enrollment details.");
+//        } catch (Exception e) {
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+//                    .body("An error occurred while fetching enrollment details.");
+//        }
+//    }
+
+
+
 }
 
