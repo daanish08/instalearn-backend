@@ -46,7 +46,7 @@ public class EnrollmentServiceImpl implements IEnrollmentService{
             enrollment.setCourse(course);
             enrollment.setUser(user);
             enrollment.setEnrollmentDate(LocalDateTime.now());
-            enrollment.setStatus(EnrollmentStatus.PENDING);
+            enrollment.setStatus(EnrollmentStatus.APPROVED);
             // 3. Save the Enrollment
             enrollmentRepository.save(enrollment);
             return ResponseEntity.status(HttpStatus.CREATED).body("Enrollment added successfully");
