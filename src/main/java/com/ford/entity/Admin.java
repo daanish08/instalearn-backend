@@ -2,9 +2,7 @@ package com.ford.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -33,6 +31,8 @@ public class Admin {
     @Column(name = "password", nullable = false, length = 255)
     private String password;
 
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     @JsonIgnore
     @OneToMany(mappedBy = "admin", cascade = CascadeType.ALL, orphanRemoval = true) // Map to the admin field in Course
     private Set<Course> courses = new HashSet<>();
