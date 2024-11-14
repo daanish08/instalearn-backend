@@ -11,7 +11,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 //[DONE]
-@CrossOrigin("http://localhost:4200")
+
+@CrossOrigin("http://localhost:5173")
 @RestController
 @RequestMapping("/admin/feedbacks")
 public class ContactController {
