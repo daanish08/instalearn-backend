@@ -1,5 +1,6 @@
 package com.ford.controller;
 
+import com.ford.dto.CourseDto;
 import com.ford.entity.Course;
 import com.ford.service.CourseServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,5 +42,12 @@ public class CourseController {
     public ResponseEntity<Integer> getCoursesCount() {
         int count = courseService.getTotalCourseCount(); // Ensure this returns a Long
         return ResponseEntity.ok(count);
+    }
+
+    // New endpoint for courses with enrollment status
+    @GetMapping("/user/{userId}/list")
+    public ResponseEntity<List<CourseDto>> listCoursesWithEnrollmentStatus(@PathVariable int userId) {
+        List<CourseDto> coursesWithStatus = courseService.getCoursesWithEnrollmentStatus(userId);
+        return ResponseEntity.ok(coursesWithStatus);
     }
 }
